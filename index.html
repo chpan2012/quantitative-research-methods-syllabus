@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>量化研究方法： 研究思維與AI實作</title>
+    <style>
+        /* --- 全域樣式與變數 --- */
+        :root {
+            --primary-color: #4A90E2;
+            --dark-color: #2c3e50;
+            --light-color: #f4f7f6;
+            --text-color: #333;
+            --border-color: #e0e0e0;
+            --header-font: 'PingFang TC', 'Microsoft JhengHei', 'Helvetica Neue', sans-serif;
+            --body-font: 'Noto Sans TC', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--body-font);
+            line-height: 1.7;
+            background-color: #fff;
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            overflow: hidden;
+            padding: 0 2rem;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--header-font);
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            list-style-position: outside;
+            padding-left: 20px;
+            margin-bottom: 1rem;
+        }
+        
+        ul ul {
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: var(--dark-color);
+        }
+
+        /* --- 頁首 --- */
+        .main-header {
+            background: var(--primary-color);
+            color: #fff;
+            padding: 3rem 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .main-header h1 {
+            color: #fff;
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .main-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* --- 導覽列 --- */
+        .navbar {
+            background: var(--dark-color);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap; /* For responsive behavior */
+            justify-content: center;
+        }
+
+        .navbar li {
+            margin: 0.2rem 1rem;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navbar a:hover, .navbar a:focus {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        /* --- 主要內容區塊 --- */
+        main section {
+            padding: 3rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        main section:last-child {
+            border-bottom: none;
+        }
+
+        /* --- 收合區塊 (Accordion) 樣式 --- */
+        .accordion-container {
+            margin-top: 1.5rem;
+        }
+
+        .accordion-item {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .accordion-item:hover {
+             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .accordion-header {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            cursor: pointer;
+            padding: 15px 20px;
+            width: 100%;
+            text-align: left;
+            border: none;
+            outline: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: var(--header-font);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .accordion-header:hover {
+            background-color: #e9ecef;
+        }
+
+        .accordion-header.active {
+            background-color: #e0e9f5;
+        }
+
+        .accordion-header::after {
+            content: '+';
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            font-weight: 300;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-header.active::after {
+            content: '−';
+        }
+
+        .accordion-content {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            background-color: #fff;
+        }
+
+        .accordion-content-inner {
+            padding: 20px 0;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .module-tag {
+            background-color: #6c757d;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+        
+        /* --- NEW: 水平內容區塊樣式 --- */
+        .content-grid {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap; 
+        }
+
+        .content-block {
+            flex: 1; 
+            min-width: 250px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+
+        .content-block h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        
+        .content-block p {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .content-grid {
+                flex-direction: column;
+            }
+        }
+        
+        /* --- 新增：檔案下載區塊樣式 --- */
+        .file-download-list ul {
+            list-style: none;
+            padding: 0;
+        }
+        .file-download-list li {
+            background-color: var(--light-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            padding: 15px 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .file-download-list li:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+        .file-download-list a {
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 500;
+            font-size: 1.05rem;
+        }
+        .file-download-list a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* --- 頁腳 --- */
+        footer {
+            background-color: var(--dark-color);
+            color: #fff;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+        
+        footer p {
+            margin: 0;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 頁首：顯示課程主要標題 -->
+    <header class="main-header">
+        <div class="container">
+            <h1>《量化研究方法： 研究思維與AI實作》</h1>
+            <p>課程綱要 (114學年度第1學期)</p>
+        </div>
+    </header>
+
+    <!-- 導覽列：可點擊跳至對應區塊 -->
+    <nav class="navbar">
+        <div class="container">
+            <ul>
+                <li><a href="#section-1">課程理念</a></li>
+                <li><a href="#section-2">AI指導原則</a></li>
+                <li><a href="#section-3">學習評量</a></li>
+                <li><a href="#section-4">課程工具</a></li>
+                <li><a href="#section-5">每週進度</a></li>
+                <li><a href="#section-6">檔案下載</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 主要內容區塊 -->
+    <main class="container">
+        <section id="section-1">
+            <h2>一、 課程理念與目標</h2>
+            <p>本課程旨在培養學生的「量化思維」能力，即透過數據來提出問題、分析問題與解決問題的能力。我們將生成式AI定位為學生的個人學習教練與研究助理，並搭配SPSS等視窗化統計軟體，讓學習的重點從繁瑣的技術操作，轉向高層次的批判性思考、問題界定與結果詮釋。</p>
+            <ul>
+                <li><strong>專案導向學習 (Project-Based Learning)</strong>：學生將從第一週開始，發想研究專題題目，並在整個學期中，逐步將所學的統計方法應用於自己的專題上，最終完成一份小型的團隊量化研究報告。</li>
+                <li><strong>AI即教練 (AI as a Coach)</strong>：我們不只將AI當作搜尋工具，而是引導學生學習如何與AI進行深度對話，利用AI來釐清概念、發想主題、模擬數據、解讀報表，甚至草擬報告。</li>
+                <li><strong>低門檻，高思維 (Low-Code, High-Thinking)</strong>：課程主要使用SPSS等圖形介面軟體，大幅降低技術門檻，讓學生能將寶貴的認知資源集中在「研究」本身，而非程式語法。</li>
+                <li><strong>雙軌學習路徑 (Differentiated Learning)</strong>：每週皆設有「進階挑戰」單元，為具備統計基礎或對特定主題有濃厚興趣的學生，提供額外的深度探索任務。</li>
+            </ul>
+        </section>
+
+        <section id="section-2">
+            <h2>二、 AI整合指導原則</h2>
+            <p>為確保AI工具的有效與合理使用，本課程訂定以下指導原則：</p>
+            <ul>
+                <li><strong>適當的AI使用</strong>：鼓勵學生使用AI進行概念釐清、研究發想、數據模擬、結果詮釋、報告草擬與語法修正。</li>
+                <li><strong>AI互動記錄</strong>：學生需記錄所有關鍵的AI互動過程（例如，使用了哪些提示詞得到重要啟發），並將其整理於「AI整合作品集」中。</li>
+                <li><strong>批判性評估</strong>：學生必須對AI生成的內容進行事實查核與批判性評估，並用自己的話重新詮釋與論述。AI是輔助思考的工具，而非直接複製答案的來源。</li>
+                <li><strong>學術誠信</strong>：直接抄襲AI生成的內容將被視為學術不端行為。所有繳交的作業與報告，都應體現學生自己的原創思考與分析。</li>
+            </ul>
+        </section>
+
+        <section id="section-3">
+            <h2>三、 學習評量方式與細則</h2>
+            <p>本課程的評量核心在於「過程導向」與「回饋即學習」。在AI時代，本課程重視你在團隊學習旅程中的投入、嘗試與反思，遠勝於最終產出的單一答案。</p>
+            <h3>形成性評量 (60%)</h3>
+            <ul>
+                <li><strong>每週進度與實作 (30%)</strong>：評量重點在於投入過程與完成度，而非答案的完美性。以完成度評分 (Completion-Based Grading) 為主，此項目以團隊為單位計分。</li>
+                <li><strong>期中專題提案 (20%)</strong>：評量重點為研究計畫的可行性與清晰度，確保專案方向穩固且可執行。</li>
+                <li><strong>AI整合作品集 (10%)</strong>：評量重點是思考深度與反思能力，而非AI答案本身。此項為個人計分。</li>
+            </ul>
+            <h3>總結性評量 (40%)</h3>
+            <ul>
+                <li><strong>期末專題報告 (25%)</strong>：繳交一份完整的小型量化研究報告。</li>
+                <li><strong>期末專題發表 (15%)</strong>：在期末的最後兩週，進行小組口頭簡報。</li>
+            </ul>
+        </section>
+        
+        <section id="section-4">
+             <h2>四、 課程使用工具</h2>
+            <ul>
+                <li><strong>個人學習助理 (AI Assistant)</strong>：學生須自備筆電以及可使用生成式AI（如ChatGPT, Claude, Gemini等）的帳號。</li>
+                <li><strong>統計分析軟體 (Statistical Software)</strong>：
+                    <ul>
+                        <li>SPSS (28版或以上)：本課程主要操作範例軟體。</li>
+                        <li>Jamovi 或 JASP (最新版)：推薦給希望使用免費開源軟體的學生。</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <section id="section-5">
+            <h2>五、 課程安排與每週進度</h2>
+            <div class="accordion-container">
+                <!-- Week 1 -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>W1: 課程導論 & AI輔助腦力激盪</span>
+                        <span class="module-tag">模組一：奠定研究基礎</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <div class="content-grid">
+                                <div class="content-block">
+                                    <h4>學習目標</h4>
+                                    <p>了解課程進行方式，並利用AI發想出至少三個可行的研究題目。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>核心活動與產出</h4>
+                                    <p>活動 : 分組討論，與AI進行腦力激盪，篩選出感興趣的研究方向。<br>產出 : 腦力激盪紀錄表。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>進階挑戰</h4>
+                                    <p>使用AI的進階提示（如角色指定與限制），生成更具創意或跨領域的研究問題。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Week 2 -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>W2: 研究問題操作化</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <div class="content-grid">
+                                <div class="content-block">
+                                    <h4>學習目標</h4>
+                                    <p>學習如何將抽象的研究問題，轉化為具體、可測量的變數。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>核心活動與產出</h4>
+                                    <p>活動 : 練習定義「概念型定義」與「操作型定義」，並在SPSS中建立對應的變數。<br>產出 : 專題的變數清單與編碼簿初稿。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>進階挑戰</h4>
+                                    <p>探討不同測量尺度（名目、次序、等距、等比）的差異，並解釋為何此差異對後續分析至關重要。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Week 3 -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>W3: 描述統計</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <div class="content-grid">
+                                <div class="content-block">
+                                    <h4>學習目標</h4>
+                                    <p>掌握集中趨勢（平均數、中位數）與離散趨勢（標準差）的計算與意義。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>核心活動與產出</h4>
+                                    <p>活動 : 使用SPSS計算範例資料的描述統計量，並練習解讀其意義。<br>產出 : 一段描述樣本基本樣貌的文字。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>進階挑戰</h4>
+                                    <p>探討偏態(Skewness)與峰態(Kurtosis)的意義，並利用AI生成偏態資料進行比較。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Week 4 -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>W4: 資料清理與常態分佈</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <div class="content-grid">
+                                <div class="content-block">
+                                    <h4>學習目標</h4>
+                                    <p>學習識別資料中的異常值(Outliers)，並理解常態分佈在統計學中的重要性。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>核心活動與產出</h4>
+                                    <p>活動 : 使用SPSS的箱型圖(Box Plot)找出異常值，並用直方圖(Histogram)檢視資料分佈。<br>產出 : 清理後的資料檔與初步的資料分佈描述。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>進階挑戰</h4>
+                                    <p>研究不同處理異常值的方法（刪除、轉換、插補）及其優缺點。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Week 5 -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>W5: 視覺化探索(一)：變數關係的呈現</span>
+                        <span class="module-tag">模組二：數據探索</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <div class="content-grid">
+                                <div class="content-block">
+                                    <h4>學習目標</h4>
+                                    <p>學習根據變數類型，選擇合適的圖表（長條圖、散佈圖）來探索變數的分佈與關係。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>核心活動與產出</h4>
+                                    <p>活動:  以鐵達尼號資料集為例，用SPSS製作「艙等與存活率」的長條圖及「年齡與票價」的散佈圖。<br>產出:  至少兩張能說明不同變數關係的圖表。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>進階挑戰</h4>
+                                    <p>挑戰製作「堆疊長條圖」或在散佈圖上加入「迴歸線」，並解釋不同呈現方式的敘事重點。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Week 6 -->
+                 <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>W6: 視覺化探索(二)：分組比較與敘事</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                           <div class="content-grid">
+                                <div class="content-block">
+                                    <h4>學習目標</h4>
+                                    <p>學會使用箱型圖(Box Plot)等工具對不同組別的資料進行視覺化比較，並學習客製化圖表以增強敘事性。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>核心活動與產出</h4>
+                                    <p>活動:  結合箱型圖與長條圖，比較不同科系學生的咖啡因攝取量與睡眠時數。<br>產出:  一份包含多張圖表的視覺化比較儀表板草圖。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>進階挑戰</h4>
+                                    <p>學習使用SPSS的圖表編輯器，客製化圖表的顏色、標籤與標題，使其符合學術出版的專業標準。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Week 7 -->
+                 <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>W7: 測量品質檢驗：信度與效度分析</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                           <div class="content-grid">
+                                <div class="content-block">
+                                    <h4>學習目標</h4>
+                                    <p>1. 理解信度意涵，計算Cronbach's Alpha。<br>2. 理解建構效度意涵，並學習使用探索性因素分析(EFA)來檢驗量表的潛在結構。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>核心活動與產出</h4>
+                                    <p>活動:  以模擬的課程滿意度問卷為例，計算信度係數並進行探索性因素分析，找出題目背後的潛在構面。<br>產出:  一份包含信度與因素分析的完整報表解讀。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>進階挑戰</h4>
+                                    <p>探討「主成分分析(PCA)」與「探索性因素分析(EFA)」的差異，並與AI討論因素分析中「轉軸(Rotation)」的意義。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Week 8 -->
+                 <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>W8: 期中複習與專題諮詢</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                           <div class="content-grid">
+                                <div class="content-block">
+                                    <h4>學習目標</h4>
+                                    <p>整合前七週所學，完善研究計畫，並準備好自己的專題資料。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>核心活動與產出</h4>
+                                    <p>活動 : 各組與教師進行分組諮詢，確定研究題目與分析路徑的可行性。<br>產出 : 提交正式的期中專題提案文件。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>進階挑戰</h4>
+                                    <p>蒐集至少兩種與自己主題相關的學術文獻，並在提案中簡述前人研究的發現。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Week 9 -->
+                 <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>W9: 卡方檢定 (Chi-Square)</span>
+                         <span class="module-tag">模組三：假設檢定</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <div class="content-grid">
+                                <div class="content-block">
+                                    <h4>學習目標</h4>
+                                    <p>學會檢定兩個「類別」變數之間是否存在關聯性。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>核心活動與產出</h4>
+                                    <p>活動 : 分析鐵達尼號資料中，「艙等」與「是否存活」這兩個類別變數是否獨立。<br>產出 : 一份完整的卡方檢定報表解讀。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>進階挑戰</h4>
+                                    <p>探索邏輯迴歸(Logistic Regression)的基礎概念，並理解它與卡方檢定的關聯與差異。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Week 10 -->
+                 <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>W10: 獨立樣本 t 檢定</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <div class="content-grid">
+                                <div class="content-block">
+                                    <h4>學習目標</h4>
+                                    <p>學會檢定「兩組」在某個「連續」變數上的平均數是否有顯著差異。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>核心活動與產出</h4>
+                                    <p>活動 : 檢定不同性別的學生，在「每日咖啡因攝取量」上是否有顯著差異。<br>產出 : 一份完整的t檢定報表解讀。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>進階挑戰</h4>
+                                    <p>探討t檢定的無母數替代方案：Mann-Whitney U 檢定，並與AI討論其使用時機。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Week 11 -->
+                 <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>W11: 變異數分析 (ANOVA)</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <div class="content-grid">
+                                <div class="content-block">
+                                    <h4>學習目標</h4>
+                                    <p>學會檢定「三組或以上」在某個「連續」變數上的平均數是否有顯著差異。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>核心活動與產出</h4>
+                                    <p>活動 : 檢定不同艙等的乘客，在「船票票價」上是否有顯著差異。<br>產出 : 一份完整的ANOVA報表解讀。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>進階挑戰</h4>
+                                    <p>學習執行事後檢定(Post-Hoc Tests)，找出到底是哪些組別之間存在具體差異。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Week 12 -->
+                 <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>W12: 相關分析 (Correlation)</span>
+                        <span class="module-tag">模組四：建立預測模型</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <div class="content-grid">
+                                <div class="content-block">
+                                    <h4>學習目標</h4>
+                                    <p>學會衡量兩個「連續」變數之間線性關係的強度與方向。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>核心活動與產出</h4>
+                                    <p>活動 : 分析「讀書時間」與「期末考成績」之間的相關性。<br>產出 : 一份相關矩陣的解讀，包含相關係數與顯著性。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>進階挑戰</h4>
+                                    <p>探討皮爾森(Pearson)相關與斯皮爾曼(Spearman)等級相關的使用時機差異。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Week 13 -->
+                 <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>W13: 簡單線性迴歸</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <div class="content-grid">
+                                <div class="content-block">
+                                    <h4>學習目標</h4>
+                                    <p>學習用一個自變數來預測一個依變數，並建立預測模型。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>核心活動與產出</h4>
+                                    <p>活動 : 建立以「讀書時間」預測「期末考成績」的迴歸模型，並解讀R平方值。<br>產出 : 一份迴歸模型的係數表解讀與模型解釋。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>進階挑戰</h4>
+                                    <p>調節效果(Moderation)初探 ：學習如何透過在迴歸中放入「交互作用項」，來檢驗X對Y的影響是否會被第三個變數所調節。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Week 14 -->
+                 <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>W14: 多元線性迴歸</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <div class="content-grid">
+                                <div class="content-block">
+                                    <h4>學習目標</h4>
+                                    <p>學習放入多個自變數來建立更完整的預測模型。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>核心活動與產出</h4>
+                                    <p>活動 : 同時使用「讀書時間」與「課外活動時數」來預測「期末考成績」。<br>產出 : 一份多元迴歸報表解讀，並比較不同模型的解釋力。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>進階挑戰</h4>
+                                    <p>中介效果(Mediation)初探 ：與AI討論中介效果的三角關係 (X→M→Y)，並理解如何用數個迴歸式來初步檢驗此效果。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Week 15 -->
+                 <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>W15: 期末專題發表(一)</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <div class="content-grid">
+                                <div class="content-block">
+                                    <h4>學習目標</h4>
+                                    <p>統整所學，以專業、清晰的方式呈現小組的研究成果。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>核心活動與產出</h4>
+                                    <p>活動 : 前半數的小組進行10-15分鐘的口頭簡報，分享研究發現，並接受提問。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>進階挑戰</h4>
+                                    <p>針對其他組別的報告，提出一個具有建設性的方法論問題。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Week 16 -->
+                 <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>W16: 期末專題發表(二) &amp; 課程總結與展望</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                           <div class="content-grid">
+                                <div class="content-block">
+                                    <h4>學習目標</h4>
+                                    <p>1. 完成專題發表。<br>2. 總結量化思維的核心，並展望未來的學習路徑。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>核心活動與產出</h4>
+                                    <p>活動 : 剩餘小組完成簡報。教師總結課程，並介紹路徑分析」(Path Analysis) 與 結構方程模型(SEM)作為整合性的分析框架藍圖。<br>產出 : 繳交最終書面報告。</p>
+                                </div>
+                                <div class="content-block">
+                                    <h4>進階挑戰</h4>
+                                    <p>在報告的「研究限制」與「未來研究建議」中， 具體說明自己的研究未來可以如何應用中介、調節或更複雜的模型來深化 。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 新增的檔案下載區塊 -->
+        <section id="section-6">
+            <h2>六、 檔案下載(資料格式轉換)</h2>
+            <div class="file-download-list">
+                <ul>
+                    <li><a href="https://drive.google.com/file/d/1kDb8B-hAU4ssweGUkP3pky9htbv3uD-i/view?usp=drive_link" target="_blank" rel="noopener noreferrer">W1腦力激盪記錄範本.csv</a></li>
+                    <li><a href="https://drive.google.com/file/d/1FCtBRizgJuzrqOQNfIF410-uECVRVOzh/view?usp=drive_link" target="_blank" rel="noopener noreferrer">W3範例資料_大學生咖啡因與睡眠習慣.CSV</a></li>
+                    <li><a href="https://drive.google.com/file/d/1KwN0es8nhKvZ99Lsx41Tlp8B93eFOMaj/view?usp=drive_link" target="_blank" rel="noopener noreferrer">W4範例資料集(含異常值).CSV</a></li>
+                    <li><a href="https://drive.google.com/file/d/1FAq0rFLecbqGGt0n8cqjeTFSE12_ODC2/view?usp=drive_link" target="_blank" rel="noopener noreferrer">W5鐵達尼號乘客資料.csv</a></li>
+                    <li><a href="https://drive.google.com/file/d/1cQzq_O-CcQ8AfBQLs_w2aGcFlKxfCnji/view?usp=drive_link" target="_blank" rel="noopener noreferrer">W12範例資料集_課程滿意度量表.csv</a></li>
+                    <li><a href="https://drive.google.com/file/d/1jySxC4Ccdzk1Q-Wy43zeN5GiFrIQRKhC/view?usp=drive_link" target="_blank" rel="noopener noreferrer">W13讀書時間與成績.csv</a></li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- 頁腳 -->
+    <footer>
+        <div class="container">
+            <p>&copy; 114學年度第1學期 量化研究方法</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript互動功能 -->
+    <script>
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                // 如果需要一次只展開一個項目，取消以下註解
+                /*
+                const currentlyActiveHeader = document.querySelector('.accordion-header.active');
+                if (currentlyActiveHeader && currentlyActiveHeader !== header) {
+                    currentlyActiveHeader.classList.remove('active');
+                    currentlyActiveHeader.nextElementSibling.style.maxHeight = null;
+                }
+                */
+
+                // 切換目前點擊的項目
+                header.classList.toggle('active');
+                const accordionContent = header.nextElementSibling;
+                if (accordionContent.style.maxHeight) {
+                    accordionContent.style.maxHeight = null;
+                    // 增加淡出效果
+                    accordionContent.style.padding = "0 20px";
+                } else {
+                    // +40 是為了確保內容有足夠空間，避免裁切
+                    accordionContent.style.maxHeight = accordionContent.scrollHeight + 40 + "px";
+                    // 增加淡入效果
+                    accordionContent.style.padding = "0 20px";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
