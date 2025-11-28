@@ -513,6 +513,7 @@
                     <li><a href="https://drive.google.com/file/d/1FAq0rFLecbqGGt0n8cqjeTFSE12_ODC2/view?usp=drive_link" target="_blank" rel="noopener noreferrer">W5鐵達尼號乘客資料.csv</a></li>
                     <li><a href="https://drive.google.com/file/d/1cQzq_O-CcQ8AfBQLs_w2aGcFlKxfCnji/view?usp=drive_link" target="_blank" rel="noopener noreferrer">W12範例資料集_課程滿意度量表.csv</a></li>
                     <li><a href="https://drive.google.com/file/d/1jySxC4Ccdzk1Q-Wy43zeN5GiFrIQRKhC/view?usp=drive_link" target="_blank" rel="noopener noreferrer">W13讀書時間與成績.csv</a></li>
+                    <li><a href="https://drive.google.com/file/d/1uM4Fut8Zqrk_buCPGK9weEmFaBRGC2kd/view?usp=drive_link" target="_blank" rel="noopener noreferrer">W14期末專案模擬資料集_大學生數位生活.sav (SPSS格式)</a></li>
                 </ul>
             </div>
         </section>
@@ -548,7 +549,7 @@
                     { week: 11, title: "變異數分析 (ANOVA)", module: "", goal: "學會檢定「三組或以上」在某個「連續」變數上的平均數是否有顯著差異。", activity: "活動: [file:英數上課例.sav]檢定不同班級的學生，分別在英文、數學成績上是否有顯著差異。<br>產出 : 一份完整的ANOVA報表解讀。", challenge_summary: "學習執行事後檢定(Post-Hoc Tests)，找出到底是哪些組別之間存在具體差異。" },
                     { week: 12, title: "相關分析 (Correlation)", module: "模組四：建立預測模型", goal: "學會衡量兩個「連續」變數之間線性關係的強度與方向。", activity: "活動 : 分析「讀書時間」與「期末考成績」之間的相關性。<br>產出 : 一份相關矩陣的解讀，包含相關係數與顯著性。", challenge_summary: "除了探索Spearman相關，學習「偏相關分析」，理解如何在控制第三個變數後，檢視兩個變數的淨關係。" },
                     { week: 13, title: "簡單線性迴歸", module: "", goal: "學習用一個自變數來預測一個依變數，並建立預測模型。", activity: "活動 : 建立以「讀書時間」預測「期末考成績」的迴歸模型，並解讀R平方值。<br>產出 : 一份迴歸模型的係數表解讀與模型解釋。", challenge_summary: "調節效果(Moderation)初探 ：學習如何檢驗X對Y的影響是否會被第三個變數(連續或類別)所調節。" },
-                    { week: 14, title: "多元線性迴歸", module: "", goal: "學習放入多個自變數來建立更完整的預測模型。", activity: "活動 : 同時使用「讀書時間」與「課外活動時數」來預測「期末考成績」。<br>產出 : 一份多元迴歸報表解讀，並比較不同模型的解釋力。", challenge_summary: "中介效果(Mediation)初探 ：與AI討論中介效果的三角關係 (X→M→Y)，並理解如何用數個迴歸式來初步檢驗此效果。" },
+                    { week: 14, title: "多元線性迴歸 & 期末專案大預演", module: "", goal: "整合本學期所有統計方法(含卡方、t檢定、ANOVA、因素分析、迴歸)，利用模擬資料集進行期末報告的演練。", activity: "活動 : 使用「大學生數位生活與身心適應」資料集，解決主管提出的六大研究問題(含FOMO因素分析、打工卡方檢定、GPA預測模型)。<button class=\"setup-guide-btn\" data-modal=\"w14-scenario-modal\">查看情境任務說明</button><br>產出 : 一份整合性的期末預演分析報告。", challenge_summary: "中介效果(Mediation)實戰：利用本週資料，檢驗「焦慮」是否中介了「社群使用」對「GPA」的影響？" },
                     { week: 15, title: "期末專題發表(一)", module: "", goal: "統整所學，以專業、清晰的方式呈現小組的研究成果。", activity: "活動 : 前半數的小組進行10-15分鐘的口頭簡報，分享研究發現，並接受提問。", challenge_summary: "針對其他組別的報告，提出一個具有建設性的方法論問題。" },
                     { week: 16, title: "期末專題發表(二) & 課程總結與展望", module: "", goal: "1. 完成專題發表。<br>2. 總結量化思維的核心，並展望未來的學習路徑。", activity: "活動 : 剩餘小組完成簡報。教師總結課程，並介紹路徑分析(Path Analysis) 與 結構方程模型(SEM)作為整合性的分析框架藍圖。<br>產出 : 繳交最終書面報告。", challenge_summary: "在報告的「研究限制」與「未來研究建議」中， 具體說明自己的研究未來可以如何應用中介、調節或更複雜的模型來深化 。" }
                 ],
@@ -566,7 +567,7 @@
                     w11: { title: "W11 進階挑戰指南", content: "<h4>引導建議</h4><ol><li><strong>第一步 (深入探索)</strong>: 本週的核心內容本身就包含了這個進階挑戰。對於進階學生，可以要求他們更深入地探討。</li><li><strong>第二步 (比較不同方法)</strong>: 問AI：<code>在SPSS的事後檢定選項中，我看到了Tukey, Scheffe, Bonferroni 等好多種方法。請問這些方法有什麼不同？它們在檢定的嚴格程度上(保守 vs. 寬鬆)有什麼差異？</code></li><li><strong>第三步 (處理前提假設)</strong>: <code>如果我的Levene檢定顯著(p < .05)，代表變異數不同質，我還可以用Tukey法嗎？如果不行的話，我應該在事後檢定中勾選哪一個選項（例如Games-Howell）來處理這個問題？</code></li></ol>" },
                     w12: { title: "W12 進階挑戰指南", content: "<h4>引導建議</h4><ol><li><strong>挑戰一：Spearman 等級相關</strong>: 問AI：<code>皮爾森(Pearson)相關分析有哪些重要的前提假設？</code>並在SPSS中改勾選「Spearman」進行比較。</li><li><strong>挑戰二：偏相關分析</strong>: 問AI：<code>什麼是「偏相關(Partial Correlation)」？它和我們這週討論的「偽相關」有什麼關係？</code>並在SPSS中操作：<code>分析</code> -> <code>相關</code> -> <code>偏相關</code>，放入控制變數後比較結果。</li></ol>" },
                     w13: { title: "W13 進階挑戰指南", content: "<h4>引導建議</h4><ol><li><strong>挑戰一：處理連續調節變數</strong>: 問AI：<code>什麼是「調節效果(Moderation)」？</code>並在SPSS中透過<code>轉換</code> -> <code>計算變數</code>來建立交互作用項，放入迴歸模型中進行檢驗。</li><li><strong>挑戰二：處理類別調節變數</strong>: 問AI：<code>調節變數可以是類別變數嗎？</code>並思考如何詮釋交互作用項的結果，以及如何透過「分組的散佈圖加上各自的迴歸線」來視覺化呈現。</li></ol>" },
-                    w14: { title: "W14 進階挑戰指南", content: "<h4>引導建議</h4><ol><li><strong>第一步 (概念探索)</strong>: 問AI：<code>什麼是「中介效果(Mediation)」？請用「讀書時間(X) -> 學習成效(M) -> 考試成績(Y)」這個例子，向我解釋這個三角關係的邏輯。</code></li><li><strong>第二步 (Baron & Kenny 四步驟法)</strong>: 與AI討論經典的中介效果檢驗步驟，並理解為何需要跑「三條」迴歸式。</li><li><strong>第三步 (結果判斷)</strong>: 問AI：<code>根據Baron & Kenny的方法，我要如何根據這三條迴歸式的結果，來判斷中介效果是否存在？</code></li></ol>" },
+                    w14: { title: "W14 進階挑戰指南", content: "<h4>引導建議</h4><ol><li><strong>第一步 (概念探索)</strong>: 問AI：<code>什麼是「中介效果(Mediation)」？請用「讀書時間(X) -> 學習成效(M) -> 考試成績(Y)」這個例子，向我解釋這個三角關係的邏輯。</code></li><li><strong>第二步 (Baron & Kenny 四步驟法)</strong>: 與AI討論經典的中介效果檢驗步驟，並理解為何需要跑「三條」迴歸式。</li><li><strong>第三步 (結果判斷)</strong>: 問AI：<code>根據Baron & Kenny的方法，我要如何根據這三條迴歸式的結果，來判斷中介效果是否存在？</code></li><li><strong>實戰應用</strong>: 利用本週的「大學生數位生活」資料，檢驗「焦慮指數」是否中介了「社群使用時數」對「GPA」的影響？</li></ol>" },
                     w15: { title: "W15 進階挑戰指南", content: "<h4>引導建議</h4><p>在活動開始前，教師可以先舉幾個「好的方法論問題」範例，以啟發學生思考：</p><ul><li><strong>關於測量</strong>: 「你們用單一題目來測量『學業壓力』，想請教你們當初為何沒有選擇使用標準化的壓力傾向量表？」</li><li><strong>關於抽樣</strong>: 「我觀察到你們的樣本主要來自大一的學生，想請教你們認為這個研究發現在大四學生身上也同樣適用嗎？」</li><li><strong>關於因果推論</strong>: 「你們的研究發現A和B有很高的相關。除了A影響B之外，有沒有可能存在第三個變數C，同時影響了A和B？」</li></ul>" },
                     w16: { title: "W16 進階挑戰指南", content: "<h4>引導建議</h4><ul><li><strong>連結課堂所學</strong>: 鼓勵學生將本週課堂上介紹的「路徑分析」或「SEM」概念，直接應用到他們的書面報告中。</li><li><strong>AI輔助寫作</strong>: 請學生問AI：<code>根據我的研究「讀書時間(X)顯著預測考試成績(Y)」，請幫我發想一個可以深化這個研究的「中介模型」與一個「調節模型」，並在「未來研究建議」的章節中，幫我草擬說明這兩個模型的段落。</code></li></ul>" }
                 }
@@ -659,6 +660,25 @@
                         </ol>
                     </div>
                 </div>
+                <div id="w14-scenario-modal" class="modal-overlay">
+                    <div class="modal-content">
+                        <button class="modal-close-btn">&times;</button>
+                        <h3>📊 期末專案大預演：大學生數位生活與身心適應調查</h3>
+                        <h4>1. 研究情境 (Scenario)</h4>
+                        <p>想像你是學校「學生事務處」的研究助理。主管注意到最近學生似乎越來越依賴社群媒體，且普遍反映睡眠不足、焦慮感上升。</p>
+                        <p>主管希望你利用一份剛回收的問卷資料（N=100），進行一次完整的量化分析，目的是找出<strong>「數位使用習慣」</strong>、<strong>「睡眠品質」</strong>與<strong>「學業/心理適應」</strong>之間的關係，並據此提出改善校園生活的建議。</p>
+                        <p>這不只是一次作業，這是你期末專案的 <strong>「模擬考」</strong>。</p>
+                        <h4>2. 你的任務：回答六個關鍵研究問題</h4>
+                        <ul>
+                            <li><strong>Q1: 我們的樣本結構長什麼樣子？</strong> (敘述統計 & 視覺化)</li>
+                            <li><strong>Q2: 「錯失恐懼症 (FOMO)」到底包含哪些層面？</strong> (因素分析)</li>
+                            <li><strong>Q3: 誰比較容易去打工？</strong> (卡方檢定)</li>
+                            <li><strong>Q4: 不同背景的學生，生活習慣有差嗎？</strong> (t檢定 & ANOVA)</li>
+                            <li><strong>Q5: 手機滑越久，成績真的越差嗎？</strong> (相關分析)</li>
+                            <li><strong>Q6: 誰是影響成績的關鍵兇手？</strong> (多元迴歸分析)</li>
+                        </ul>
+                    </div>
+                </div>
             `;
             
             // Re-attach all event listeners
@@ -701,7 +721,7 @@
             }
 
             closeButtons.forEach(button => {
-                button.addEventListener('click', () => {
+                button.addEventListener('click', (e) => {
                     closeModal(button.closest('.modal-overlay'));
                 });
             });
@@ -717,13 +737,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
