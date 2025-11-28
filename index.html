@@ -391,6 +391,10 @@
             cursor: pointer;
             margin-left: 10px;
             transition: background-color 0.3s ease, color 0.3s ease;
+            
+            /* Additions for better Link support */
+            display: inline-block;
+            text-decoration: none;
         }
         .setup-guide-btn:hover {
             background-color: var(--primary-color);
@@ -479,6 +483,10 @@
             <ul>
                 <li><strong>期末專題報告 (25%)</strong>：繳交一份完整的小型量化研究報告。</li>
                 <li><strong>期末專題發表 (15%)</strong>：在期末的最後兩週，進行小組口頭簡報。</li>
+                <li>
+                    <strong>團隊專案 同儕評鑑問卷</strong>：
+                    <a href="https://forms.gle/5WF9FtJxo58AkWrw5" target="_blank" class="setup-guide-btn" style="color: var(--primary-color);">點擊前往填寫</a>
+                </li>
             </ul>
         </section>
         
@@ -513,7 +521,13 @@
                     <li><a href="https://drive.google.com/file/d/1FAq0rFLecbqGGt0n8cqjeTFSE12_ODC2/view?usp=drive_link" target="_blank" rel="noopener noreferrer">W5鐵達尼號乘客資料.csv</a></li>
                     <li><a href="https://drive.google.com/file/d/1cQzq_O-CcQ8AfBQLs_w2aGcFlKxfCnji/view?usp=drive_link" target="_blank" rel="noopener noreferrer">W12範例資料集_課程滿意度量表.csv</a></li>
                     <li><a href="https://drive.google.com/file/d/1jySxC4Ccdzk1Q-Wy43zeN5GiFrIQRKhC/view?usp=drive_link" target="_blank" rel="noopener noreferrer">W13讀書時間與成績.csv</a></li>
-                    <li><a href="https://drive.google.com/file/d/1uM4Fut8Zqrk_buCPGK9weEmFaBRGC2kd/view?usp=drive_link" target="_blank" rel="noopener noreferrer">W14期末專案模擬資料集_大學生數位生活.sav (SPSS格式)</a></li>
+                    
+                    <!-- W14 下載區：只保留 sav -->
+                    <li>
+                        <a href="https://drive.google.com/file/d/1uM4Fut8Zqrk_buCPGK9weEmFaBRGC2kd/view?usp=drive_link" target="_blank" rel="noopener noreferrer">
+                            W14期末專案模擬資料集_大學生數位生活.sav (SPSS格式)
+                        </a>
+                    </li>
                 </ul>
             </div>
         </section>
@@ -549,7 +563,7 @@
                     { week: 11, title: "變異數分析 (ANOVA)", module: "", goal: "學會檢定「三組或以上」在某個「連續」變數上的平均數是否有顯著差異。", activity: "活動: [file:英數上課例.sav]檢定不同班級的學生，分別在英文、數學成績上是否有顯著差異。<br>產出 : 一份完整的ANOVA報表解讀。", challenge_summary: "學習執行事後檢定(Post-Hoc Tests)，找出到底是哪些組別之間存在具體差異。" },
                     { week: 12, title: "相關分析 (Correlation)", module: "模組四：建立預測模型", goal: "學會衡量兩個「連續」變數之間線性關係的強度與方向。", activity: "活動 : 分析「讀書時間」與「期末考成績」之間的相關性。<br>產出 : 一份相關矩陣的解讀，包含相關係數與顯著性。", challenge_summary: "除了探索Spearman相關，學習「偏相關分析」，理解如何在控制第三個變數後，檢視兩個變數的淨關係。" },
                     { week: 13, title: "簡單線性迴歸", module: "", goal: "學習用一個自變數來預測一個依變數，並建立預測模型。", activity: "活動 : 建立以「讀書時間」預測「期末考成績」的迴歸模型，並解讀R平方值。<br>產出 : 一份迴歸模型的係數表解讀與模型解釋。", challenge_summary: "調節效果(Moderation)初探 ：學習如何檢驗X對Y的影響是否會被第三個變數(連續或類別)所調節。" },
-                    { week: 14, title: "多元線性迴歸 & 期末專案大預演", module: "", goal: "整合本學期所有統計方法(含卡方、t檢定、ANOVA、因素分析、迴歸)，利用模擬資料集進行期末報告的演練。", activity: "活動 : 使用「大學生數位生活與身心適應」資料集，解決主管提出的六大研究問題(含FOMO因素分析、打工卡方檢定、GPA預測模型)。<button class=\"setup-guide-btn\" data-modal=\"w14-scenario-modal\">查看情境任務說明</button><br>產出 : 一份整合性的期末預演分析報告。", challenge_summary: "中介效果(Mediation)實戰：利用本週資料，檢驗「焦慮」是否中介了「社群使用」對「GPA」的影響？" },
+                    { week: 14, title: "多元線性迴歸 & 期末專案大預演", module: "", goal: "整合本學期所有統計方法(含卡方、t檢定、ANOVA、因素分析、迴歸)，利用模擬資料集進行期末報告的全真演練。", activity: "活動 : 使用「大學生數位生活與身心適應」資料集，解決主任提出的六大研究問題(含FOMO因素分析、打工卡方檢定、GPA預測模型)。<button class=\"setup-guide-btn\" data-modal=\"w14-scenario-modal\">查看情境任務說明</button><br>產出 : 一份整合性的期末預演分析報告。", challenge_summary: "中介效果(Mediation)實戰：利用本週資料，檢驗「焦慮」是否中介了「社群使用」對「GPA」的影響？" },
                     { week: 15, title: "期末專題發表(一)", module: "", goal: "統整所學，以專業、清晰的方式呈現小組的研究成果。", activity: "活動 : 前半數的小組進行10-15分鐘的口頭簡報，分享研究發現，並接受提問。", challenge_summary: "針對其他組別的報告，提出一個具有建設性的方法論問題。" },
                     { week: 16, title: "期末專題發表(二) & 課程總結與展望", module: "", goal: "1. 完成專題發表。<br>2. 總結量化思維的核心，並展望未來的學習路徑。", activity: "活動 : 剩餘小組完成簡報。教師總結課程，並介紹路徑分析(Path Analysis) 與 結構方程模型(SEM)作為整合性的分析框架藍圖。<br>產出 : 繳交最終書面報告。", challenge_summary: "在報告的「研究限制」與「未來研究建議」中， 具體說明自己的研究未來可以如何應用中介、調節或更複雜的模型來深化 。" }
                 ],
