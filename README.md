@@ -1,21 +1,16 @@
 📊 Quantitative Research Methods: Research Thinking & AI Implementation
-
 114th Academic Year, 1st Semester
-
 "From Data to Insight: Your AI-Powered Research Journey"
 
 📖 About This Course
 
 This repository hosts the Interactive Syllabus for the course "Quantitative Research Methods: Research Thinking and AI Implementation".
-
 Unlike traditional statistics courses that focus heavily on rote memorization of formulas or complex coding, this course adopts a "Low-Code, High-Thinking" approach. We leverage Generative AI (ChatGPT, Claude, Gemini) as a personal research coach to guide students through the entire research process—from hypothesis generation to data interpretation.
 
 🎯 Core Philosophy
 
 AI as a Coach: Learning to dialogue with AI to clarify concepts, simulate data, and interpret statistical outputs.
-
 Project-Based Learning (PBL): Students build their own research projects week by week.
-
 Critical Thinking: Focus on the why and so what of data, rather than just the how of software operation.
 
 🌐 Interactive Syllabus Features
